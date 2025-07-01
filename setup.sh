@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e  # 에러 발생 시 중단
 
+# ✅ 이미 실행됐는지 확인
+if [ -f "$HOME/.setup_done" ]; then
+    echo "✅ 이미 초기화 완료됨. 종료합니다."
+    exit 0
+fi
+
 echo "✅ 시스템 업데이트 중..."
 sudo apt update && sudo apt upgrade -y
 
@@ -69,3 +75,6 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 echo "🎉 완료! 서버 환경 세팅이 완료되었습니다."
+
+# ✅ 마지막 줄에 실행 완료 마커 생성
+touch "$HOME/.setup_done"
