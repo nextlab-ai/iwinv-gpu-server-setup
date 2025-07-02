@@ -76,5 +76,30 @@ pip install -r requirements.txt
 
 echo "🎉 완료! 서버 환경 세팅이 완료되었습니다."
 
+# ----------------------------
+# Docker daemon 설정 추가 (기본 설정만)
+# ----------------------------
+echo "🛠️ Docker daemon 기본 설정 중..."
+
+sudo mkdir -p /etc/docker
+
+sudo tee /etc/docker/daemon.json > /dev/null <<EOF
+{
+  "default-runtime": "nvidia",
+  "runtimes": {
+    "nvidia": {
+      "path": "nvidia-container-runtime",
+      "runtimeArgs": []
+    }
+  },
+  "data-root": "/mnt/data/docker"
+}
+EOF
+
+echo "🔄 Docker 데몬 재시작 중..."
+sudo systemctl daemon-reexec
+sudo systemctl restart docker
+
+
 # ✅ 마지막 줄에 실행 완료 마커 생성
 touch "$HOME/.setup_done"
